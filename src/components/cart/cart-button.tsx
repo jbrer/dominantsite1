@@ -39,7 +39,7 @@ export function CartFab() {
       type="button"
       onClick={() => setOpen(true)}
       aria-label={`Открыть корзину, товаров: ${count}`}
-      className="fixed bottom-[92px] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-orange-600 text-white shadow-[0_12px_30px_-8px_rgba(234,88,12,0.6)] transition-transform active:scale-95 md:hidden"
+      className="fixed bottom-[92px] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-orange-600 text-white shadow-[0_10px_28px_-12px_rgba(0,0,0,0.5)] transition-transform active:scale-95 md:hidden"
     >
       <ShoppingBasket className="h-6 w-6" strokeWidth={2.2} />
       <span

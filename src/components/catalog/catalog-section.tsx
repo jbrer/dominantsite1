@@ -1,9 +1,9 @@
 'use client'
 
-// Секция «Каталог товаров»: товары из БД + фильтр по категориям.
-// Кнопка «В корзину» кладёт товар в корзину (zustand + localStorage),
-// после чего в шапке и на плавающей кнопке появляется счётчик.
-import { Minus, Plus, ShoppingBasket } from 'lucide-react'
+// Секция «Каталог»: плитки категорий (работают как фильтр) + сетка товаров.
+// Товары из БД, кнопка «В корзину» кладёт товар в корзину (zustand + localStorage).
+import Image from 'next/image'
+import { Minus, Phone, Plus, ShoppingBasket, X } from 'lucide-react'
 import { FadeIn } from '@/components/landing/fade-in'
 import { useCart, useCartQty, useCatalogFilter } from '@/lib/cart-store'
 import {
@@ -12,6 +12,7 @@ import {
   formatPrice,
   type PublicProduct,
 } from '@/lib/catalog'
+import { site } from '@/lib/site'
 
 export function CatalogSection({ products }: { products: PublicProduct[] }) {
   const category = useCatalogFilter((s) => s.category)
@@ -20,91 +21,137 @@ export function CatalogSection({ products }: { products: PublicProduct[] }) {
   const filtered =
     category === 'all' ? products : products.filter((p) => p.category === category)
 
-  const chips = [
-    { slug: 'all', label: 'Все товары' },
-    ...PRODUCT_CATEGORIES.map((c) => ({ slug: c.slug as string, label: c.label })),
-  ]
-
   return (
     <section
       id="products"
-      className="scroll-mt-16 bg-zinc-950 py-20 text-white sm:py-24"
+      className="scroll-mt-16 bg-white py-16 sm:py-20"
       aria-label="Каталог товаров с ценами"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <FadeIn className="flex flex-wrap items-end justify-between gap-5">
+        <FadeIn className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3.5 py-1.5 text-[12px] font-bold uppercase tracking-wider text-orange-400">
+            <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-zinc-400">
               Каталог
-            </span>
-            <h2 className="mt-4 max-w-xl font-display text-3xl font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-[40px]">
-              Выбирайте товары —{' '}
-              <span className="text-gradient-orange">мы привезём</span>
+            </p>
+            <h2 className="mt-2.5 font-display text-[30px] font-medium leading-[1.12] text-zinc-950 sm:text-[38px]">
+              Товары магазина
             </h2>
           </div>
-          <p className="max-w-sm text-[15px] leading-relaxed text-zinc-400">
-            Кладите нужное в корзину и оставляйте заявку — перезвоним, всё
-            уточним и рассчитаем доставку.
+          <p className="max-w-sm text-[14.5px] leading-relaxed text-zinc-500">
+            Это витрина основных позиций — в зале ассортимент шире. Кладите
+            нужное в корзину и оставляйте заявку: перезвоним и рассчитаем
+            доставку.
           </p>
         </FadeIn>
 
-        {/* Фильтр по категориям */}
+        {/* Плитки категорий — визуальный фильтр */}
         <FadeIn delay={0.05}>
           <div
             role="tablist"
             aria-label="Фильтр каталога по категориям"
-            className="mt-9 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="mt-9 grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-4"
           >
-            {chips.map((chip) => {
-              const active = category === chip.slug
+            {PRODUCT_CATEGORIES.map((cat) => {
+              const active = category === cat.slug
               return (
                 <button
-                  key={chip.slug}
+                  key={cat.slug}
                   type="button"
                   role="tab"
                   aria-selected={active}
-                  onClick={() => setCategory(chip.slug)}
-                  className={`inline-flex h-11 shrink-0 items-center rounded-xl px-5 text-[14px] font-bold transition-all active:scale-[0.98] ${
-                    active
-                      ? 'bg-orange-600 text-white shadow-[0_8px_24px_-10px_rgba(234,88,12,0.7)]'
-                      : 'border border-white/15 text-zinc-300 hover:border-orange-500/50 hover:text-white'
-                  }`}
+                  onClick={() => setCategory(active ? 'all' : cat.slug)}
+                  className="group text-left"
                 >
-                  {chip.label}
+                  <span
+                    className={`block overflow-hidden rounded-lg transition-all ${
+                      active
+                        ? 'ring-2 ring-zinc-950 ring-offset-2'
+                        : 'ring-1 ring-zinc-200 group-hover:ring-zinc-400'
+                    }`}
+                  >
+                    <Image
+                      src={cat.image}
+                      alt={cat.alt}
+                      width={576}
+                      height={432}
+                      className="h-28 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:h-32"
+                    />
+                  </span>
+                  <span className="mt-2.5 flex items-center gap-2">
+                    <span
+                      aria-hidden
+                      className={`h-1.5 w-1.5 shrink-0 transition-colors ${
+                        active ? 'bg-orange-600' : 'bg-zinc-300 group-hover:bg-zinc-400'
+                      }`}
+                    />
+                    <span
+                      className={`text-[14.5px] transition-colors ${
+                        active
+                          ? 'font-bold text-zinc-950'
+                          : 'font-medium text-zinc-600 group-hover:text-zinc-950'
+                      }`}
+                    >
+                      {cat.label}
+                    </span>
+                  </span>
                 </button>
               )
             })}
           </div>
         </FadeIn>
 
+        {/* Строка состояния фильтра */}
+        {category !== 'all' && (
+          <div className="mt-6 flex items-center justify-between border-b border-zinc-200 pb-4">
+            <p className="text-[14px] font-semibold text-zinc-950">
+              Показаны товары:{' '}
+              <span className="text-orange-600">
+                {CATEGORY_MAP[category as keyof typeof CATEGORY_MAP]?.label ?? category}
+              </span>
+            </p>
+            <button
+              type="button"
+              onClick={() => setCategory('all')}
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-zinc-500 transition-colors hover:text-zinc-950"
+            >
+              <X className="h-4 w-4" strokeWidth={2.2} />
+              Сбросить
+            </button>
+          </div>
+        )}
+
         {/* Сетка товаров */}
         {filtered.length > 0 ? (
-          <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((product, i) => (
-              <FadeIn key={product.id} delay={(i % 3) * 0.06}>
+              <FadeIn key={product.id} delay={(i % 3) * 0.05}>
                 <ProductCard product={product} />
               </FadeIn>
             ))}
           </div>
         ) : (
-          <FadeIn delay={0.1}>
-            <div className="mt-9 flex flex-col items-center rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-              <ShoppingBasket className="h-10 w-10 text-zinc-600" strokeWidth={1.6} />
-              <h3 className="mt-4 font-display text-xl font-extrabold">
-                Здесь пока пусто
-              </h3>
-              <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-zinc-400">
-                Товары этой категории скоро появятся. Позвоните нам — наверняка
-                найдём то, что нужно!
-              </p>
-            </div>
-          </FadeIn>
+          <div className="mt-10 border-y border-zinc-200 py-14 text-center">
+            <p className="font-display text-[20px] font-medium text-zinc-950">
+              В этой категории пока пусто
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-[14.5px] leading-relaxed text-zinc-500">
+              Товары скоро появятся на витрине. Позвоните нам — в зале наверняка
+              найдётся то, что нужно.
+            </p>
+            <a
+              href={site.phoneHref}
+              className="mt-5 inline-flex items-center gap-2 text-[14.5px] font-semibold text-zinc-950 transition-colors hover:text-orange-600"
+            >
+              <Phone className="h-4 w-4 text-orange-600" strokeWidth={2.1} />
+              {site.phone}
+            </a>
+          </div>
         )}
 
-        <FadeIn delay={0.12}>
-          <p className="mt-10 text-center text-[14px] leading-relaxed text-zinc-500">
-            Это витрина основных товаров — в зале ассортимент шире. Цены
-            указаны ориентировочно и могут отличаться от актуальных.
+        <FadeIn delay={0.1}>
+          <p className="mt-9 border-t border-zinc-200 pt-5 text-[13px] leading-relaxed text-zinc-400">
+            Цены на витрине ориентировочные и могут отличаться от актуальных в
+            магазине. Точное наличие и стоимость подскажет продавец-консультант.
           </p>
         </FadeIn>
       </div>
@@ -119,28 +166,30 @@ function ProductCard({ product }: { product: PublicProduct }) {
   const meta = CATEGORY_MAP[product.category]
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white text-zinc-950 shadow-[0_2px_16px_-8px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_-20px_rgba(234,88,12,0.45)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-lg bg-white ring-1 ring-zinc-200 transition-shadow duration-300 hover:shadow-[0_10px_32px_-20px_rgba(0,0,0,0.35)]">
       {/* Фото товара (или фото категории как заглушка) */}
       <div className="relative h-44 overflow-hidden sm:h-48">
         <img
           src={product.imageUrl || meta?.image}
           alt={product.name}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          className="h-full w-full object-cover"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-zinc-950/70 px-3 py-1 text-[12px] font-bold text-white backdrop-blur">
+        <span className="absolute left-3 top-3 bg-white/90 px-2 py-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-zinc-700 backdrop-blur-sm">
           {meta?.label ?? product.category}
         </span>
         {inCart > 0 && (
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-orange-600 px-3 py-1 text-[12px] font-extrabold text-white shadow-lg">
-            <ShoppingBasket className="h-3.5 w-3.5" strokeWidth={2.4} />
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 bg-zinc-950 px-2 py-1 text-[11px] font-bold text-white">
+            <ShoppingBasket className="h-3.5 w-3.5" strokeWidth={2.2} />
             {inCart}
           </span>
         )}
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-[16px] font-bold leading-snug">{product.name}</h3>
+        <h3 className="text-[15.5px] font-semibold leading-snug text-zinc-950">
+          {product.name}
+        </h3>
         {product.description && (
           <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-zinc-500">
             {product.description}
@@ -149,11 +198,11 @@ function ProductCard({ product }: { product: PublicProduct }) {
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-4">
           <div className="min-w-0">
-            <p className="font-display text-[19px] font-extrabold tracking-tight">
+            <p className="font-display text-[18px] font-semibold leading-tight text-zinc-950">
               {formatPrice(product.price)}
             </p>
             {product.price != null && (
-              <p className="text-[12px] text-zinc-400">за {product.unit}</p>
+              <p className="mt-0.5 text-[12px] text-zinc-400">за {product.unit}</p>
             )}
           </div>
 
@@ -162,31 +211,31 @@ function ProductCard({ product }: { product: PublicProduct }) {
               type="button"
               onClick={() => add(product.id)}
               aria-label={`Добавить «${product.name}» в корзину`}
-              className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-orange-600 px-4 text-[14px] font-bold text-white transition-all hover:bg-orange-500 active:scale-[0.97]"
+              className="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-zinc-950 px-4 text-[13.5px] font-semibold text-white transition-colors hover:bg-orange-600 active:scale-[0.98]"
             >
-              <ShoppingBasket className="h-4 w-4" strokeWidth={2.4} />
+              <ShoppingBasket className="h-4 w-4" strokeWidth={2.2} />
               В корзину
             </button>
           ) : (
-            <div className="inline-flex h-11 shrink-0 items-center overflow-hidden rounded-xl bg-orange-600 text-white">
+            <div className="inline-flex h-10 shrink-0 items-center overflow-hidden rounded-lg bg-zinc-950 text-white">
               <button
                 type="button"
                 onClick={() => setQty(product.id, inCart - 1)}
                 aria-label={`Убавить «${product.name}»`}
-                className="grid h-full w-10 place-items-center transition-colors hover:bg-orange-700/60 active:bg-orange-700"
+                className="grid h-full w-10 place-items-center transition-colors hover:bg-orange-600 active:bg-orange-700"
               >
-                <Minus className="h-4 w-4" strokeWidth={2.6} />
+                <Minus className="h-4 w-4" strokeWidth={2.4} />
               </button>
-              <span className="w-7 text-center text-[15px] font-extrabold tabular-nums">
+              <span className="w-7 text-center text-[14px] font-bold tabular-nums">
                 {inCart}
               </span>
               <button
                 type="button"
                 onClick={() => setQty(product.id, inCart + 1)}
                 aria-label={`Прибавить «${product.name}»`}
-                className="grid h-full w-10 place-items-center transition-colors hover:bg-orange-700/60 active:bg-orange-700"
+                className="grid h-full w-10 place-items-center transition-colors hover:bg-orange-600 active:bg-orange-700"
               >
-                <Plus className="h-4 w-4" strokeWidth={2.6} />
+                <Plus className="h-4 w-4" strokeWidth={2.4} />
               </button>
             </div>
           )}

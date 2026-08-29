@@ -14,7 +14,6 @@ import { site } from '@/lib/site'
 
 const NAV_LINKS = [
   { href: '#products', label: 'Каталог' },
-  { href: '#why-us', label: 'Почему мы' },
   { href: '#delivery', label: 'Доставка' },
   { href: '#contacts', label: 'Контакты' },
 ]
@@ -33,7 +32,7 @@ export function SiteHeader() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 bg-white/95 text-zinc-950 backdrop-blur transition-shadow duration-300 ${
-        scrolled ? 'border-b border-zinc-200 shadow-[0_1px_0_rgba(0,0,0,0.02)]' : 'border-b border-transparent'
+        scrolled ? 'border-b border-zinc-200' : 'border-b border-transparent'
       }`}
     >
       <nav
@@ -46,10 +45,10 @@ export function SiteHeader() {
           aria-label="ДОМИНАНТ — наверх"
           className="flex items-center gap-2.5"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-600">
-            <House className="h-[19px] w-[19px] text-white" strokeWidth={2.4} />
+          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-orange-600">
+            <House className="h-[17px] w-[17px] text-white" strokeWidth={2.4} />
           </span>
-          <span className="font-display text-[18px] font-extrabold tracking-[-0.02em]">
+          <span className="font-display text-[19px] font-semibold tracking-normal">
             ДОМИНАНТ
           </span>
         </a>
@@ -60,7 +59,7 @@ export function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="text-[14px] font-semibold text-zinc-600 transition-colors hover:text-orange-600"
+              className="text-[14px] font-medium text-zinc-600 transition-colors hover:text-zinc-950"
             >
               {link.label}
             </a>
@@ -71,22 +70,14 @@ export function SiteHeader() {
           {/* Телефон (десктоп) */}
           <a
             href={site.phoneHref}
-            className="hidden items-center gap-1.5 text-[14px] font-bold tracking-tight transition-colors hover:text-orange-600 lg:flex"
+            className="hidden items-center gap-1.5 text-[14px] font-semibold text-zinc-950 transition-colors hover:text-orange-600 lg:flex"
           >
-            <Phone className="h-4 w-4 text-orange-600" strokeWidth={2.2} />
+            <Phone className="h-4 w-4 text-orange-600" strokeWidth={2.1} />
             {site.phone}
           </a>
 
           {/* Корзина */}
           <CartHeaderButton />
-
-          {/* CTA */}
-          <a
-            href="#contacts"
-            className="hidden h-10 items-center rounded-lg bg-orange-600 px-5 text-[14px] font-bold text-white transition-colors hover:bg-orange-500 active:scale-[0.98] sm:inline-flex"
-          >
-            Оставить заявку
-          </a>
 
           {/* Мобильное меню */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -101,8 +92,8 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] border-black/[0.08] bg-white">
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2.5 font-display text-lg font-extrabold tracking-[-0.02em] text-zinc-950">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-600">
+                <SheetTitle className="flex items-center gap-2.5 font-display text-lg font-semibold text-zinc-950">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-orange-600">
                     <House className="h-4 w-4 text-white" strokeWidth={2.4} />
                   </span>
                   ДОМИНАНТ
@@ -114,7 +105,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="border-b border-zinc-100 py-4 font-display text-[20px] font-bold tracking-[-0.02em] text-zinc-950 transition-colors hover:text-orange-600"
+                    className="border-b border-zinc-100 py-4 text-[17px] font-medium text-zinc-950 transition-colors hover:text-orange-600"
                   >
                     {link.label}
                   </a>
@@ -123,16 +114,19 @@ export function SiteHeader() {
               <div className="mt-8 space-y-1.5 px-1 text-sm text-zinc-500">
                 <a
                   href={site.phoneHref}
-                  className="block text-base font-bold text-zinc-950"
+                  className="block font-display text-[19px] font-semibold text-zinc-950"
                 >
                   {site.phone}
                 </a>
                 <p>{site.address}</p>
+                <p>
+                  {site.hours[0]?.days} {site.hours[0]?.time}
+                </p>
               </div>
               <a
                 href="#contacts"
                 onClick={() => setOpen(false)}
-                className="mt-6 flex h-12 items-center justify-center rounded-lg bg-orange-600 text-[15px] font-bold text-white transition-colors hover:bg-orange-500"
+                className="mt-6 flex h-12 items-center justify-center rounded-lg bg-zinc-950 text-[15px] font-semibold text-white transition-colors hover:bg-orange-600"
               >
                 Оставить заявку
               </a>

@@ -120,11 +120,11 @@ export function CartSheet({ products }: Props) {
         className="flex w-full flex-col gap-0 border-black/[0.08] bg-white p-0 sm:max-w-md"
       >
         <SheetHeader className="border-b border-zinc-100 px-5 py-4">
-          <SheetTitle className="flex items-center gap-2.5 font-display text-lg font-extrabold tracking-[-0.02em] text-zinc-950">
+          <SheetTitle className="flex items-center gap-2.5 font-display text-lg font-semibold tracking-normal text-zinc-950">
             <ShoppingBasket className="h-5 w-5 text-orange-600" strokeWidth={2.2} />
             Ваша корзина
             {rows.length > 0 && (
-              <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[12px] font-bold text-orange-600">
+              <span className="rounded-md bg-orange-50 px-2.5 py-1 text-[12px] font-bold text-orange-600">
                 {rows.length}
               </span>
             )}
@@ -137,7 +137,7 @@ export function CartSheet({ products }: Props) {
             <span className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-50">
               <CheckCircle2 className="h-9 w-9 text-orange-600" strokeWidth={2} />
             </span>
-            <h3 className="mt-5 font-display text-2xl font-extrabold tracking-[-0.02em] text-zinc-950">
+            <h3 className="mt-5 font-display text-[22px] font-medium tracking-normal text-zinc-950">
               Заявка №{successId} принята!
             </h3>
             <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-zinc-500">
@@ -158,7 +158,7 @@ export function CartSheet({ products }: Props) {
             <span className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-50">
               <ShoppingBasket className="h-8 w-8 text-zinc-300" strokeWidth={1.8} />
             </span>
-            <h3 className="mt-5 font-display text-xl font-extrabold text-zinc-950">
+            <h3 className="mt-5 font-display text-[19px] font-medium text-zinc-950">
               Корзина пока пуста
             </h3>
             <p className="mt-2 text-[15px] leading-relaxed text-zinc-500">
@@ -202,7 +202,7 @@ export function CartSheet({ products }: Props) {
                         >
                           <Minus className="h-4 w-4" strokeWidth={2.4} />
                         </button>
-                        <span className="w-8 text-center text-[14px] font-extrabold tabular-nums text-zinc-950">
+                        <span className="w-8 text-center text-[14px] font-bold tabular-nums text-zinc-950">
                           {entry.qty}
                         </span>
                         <button
@@ -216,7 +216,7 @@ export function CartSheet({ products }: Props) {
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <span className="text-[15px] font-extrabold tabular-nums text-zinc-950">
+                        <span className="text-[15px] font-bold tabular-nums text-zinc-950">
                           {formatPrice(lineTotal(product.price, entry.qty))}
                         </span>
                         <button
@@ -240,7 +240,7 @@ export function CartSheet({ products }: Props) {
                 <span className="text-[13px] font-semibold uppercase tracking-wide text-zinc-400">
                   Итого
                 </span>
-                <span className="font-display text-xl font-extrabold tracking-tight text-zinc-950">
+                <span className="font-display text-[19px] font-semibold tracking-normal text-zinc-950">
                   {hasAskPrice && '> '}
                   {formatPrice(total)}
                 </span>

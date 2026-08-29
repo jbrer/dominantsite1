@@ -34,7 +34,7 @@ export function WhyUs() {
   return (
     <section
       id="why-us"
-      className="scroll-mt-16 bg-white py-20 sm:py-24"
+      className="scroll-mt-16 border-y border-zinc-200 bg-zinc-50 py-16 sm:py-20"
       aria-label="Почему выбирают нас"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -42,9 +42,9 @@ export function WhyUs() {
           {/* Заголовок */}
           <div className="lg:sticky lg:top-24 lg:self-start">
             <FadeIn>
-              <h2 className="font-display text-3xl font-extrabold leading-[1.1] tracking-[-0.02em] text-zinc-950 sm:text-[40px]">
+              <h2 className="font-display text-[30px] font-medium leading-[1.12] text-zinc-950 sm:text-[38px]">
                 Почему выбирают{' '}
-                <span className="text-orange-600">ДОМИНАНТ</span>
+                <span className="italic text-orange-600">ДОМИНАНТ</span>
               </h2>
               <p className="mt-5 max-w-md text-[16px] leading-relaxed text-zinc-600 sm:text-[17px]">
                 Мы знаем, как важен каждый шаг в создании дома. Поэтому рядом
@@ -92,16 +92,16 @@ export function WhyUs() {
         {/* Шаги покупки */}
         <FadeIn>
           <div className="mt-16 sm:mt-20">
-            <h3 className="font-display text-2xl font-extrabold tracking-[-0.02em] text-zinc-950 sm:text-[30px]">
+            <h3 className="font-display text-[24px] font-medium tracking-normal text-zinc-950 sm:text-[28px]">
               Как купить
             </h3>
             <ol className="mt-9 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((step, i) => (
-                <li key={step.title} className="border-t border-zinc-200 pt-5">
-                  <span className="font-display text-[38px] font-extrabold leading-none tabular-nums text-orange-600">
+                <li key={step.title} className="border-t-2 border-zinc-950 pt-5">
+                  <span className="font-display text-[30px] font-medium leading-none tabular-nums text-orange-600">
                     {i + 1}
                   </span>
-                  <p className="mt-3 font-display text-[17px] font-bold tracking-[-0.01em] text-zinc-950">
+                  <p className="mt-3 text-[16px] font-semibold tracking-normal text-zinc-950">
                     {step.title}
                   </p>
                   <p className="mt-1.5 text-[14.5px] leading-relaxed text-zinc-500">

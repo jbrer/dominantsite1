@@ -2,7 +2,7 @@ import { Clock, House, MapPin, Phone } from 'lucide-react'
 import { site } from '@/lib/site'
 
 const NAV = [
-  { href: '#catalog', label: 'Каталог' },
+  { href: '#products', label: 'Каталог' },
   { href: '#why-us', label: 'Почему мы' },
   { href: '#delivery', label: 'Доставка' },
   { href: '#contacts', label: 'Контакты' },
@@ -28,7 +28,7 @@ export function SiteFooter() {
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-600">
                 <House className="h-[19px] w-[19px] text-white" strokeWidth={2.4} />
               </span>
-              <span className="font-display text-[18px] font-extrabold tracking-[-0.02em]">
+              <span className="font-display text-[19px] font-semibold tracking-normal">
                 ДОМИНАНТ
               </span>
             </a>
@@ -66,7 +66,7 @@ export function SiteFooter() {
               {CATEGORIES.map((cat) => (
                 <li key={cat}>
                   <a
-                    href="#catalog"
+                    href="#products"
                     className="text-zinc-300 transition-colors hover:text-white"
                   >
                     {cat}

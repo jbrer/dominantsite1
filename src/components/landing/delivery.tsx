@@ -13,11 +13,11 @@ export function Delivery() {
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
         <FadeIn>
-          <p className="text-[12.5px] font-extrabold uppercase tracking-[0.18em] text-orange-500">
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.14em] text-orange-500">
             Доставка
           </p>
-          <h2 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-[40px]">
-            Привезём по всей Брестской области.
+          <h2 className="mt-3 font-display text-[30px] font-medium leading-[1.12] sm:text-[38px]">
+            Привезём по всей Брестской области
           </h2>
           <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-zinc-400 sm:text-[17px]">
             Купили в ДОМИНАНТ — и товар уже едет к вам. Доставим двери,
@@ -29,7 +29,7 @@ export function Delivery() {
             {MAIN_CITIES.map((city) => (
               <li key={city} className="flex items-center gap-3 py-4">
                 <MapPin className="h-5 w-5 shrink-0 text-orange-500" strokeWidth={2.1} />
-                <span className="text-xl font-extrabold tracking-tight">{city}</span>
+                <span className="font-display text-xl font-medium tracking-normal">{city}</span>
               </li>
             ))}
           </ul>

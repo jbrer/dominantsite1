@@ -19,8 +19,9 @@
 - **Палитра СТРОГО**: чёрный / белый / оранжевый (orange-500/600 как единственный акцент)
 - Весь контент на русском языке
 
-Статус: лендинг полностью готов и проверен (клиент одобрил: «вот, это уже прикольно»).
-MVP «Каталог → Корзина → Заявка» + админка реализованы и верифицированы E2E.
+Статус: 29.08 структура переделана из «лендинга» в «магазин» (Task 12): каталог — главный
+блок сразу под короткой вводной полосой; заголовки/цены/логотип — Playfair Display.
+MVP «Каталог → Корзина → Заявка» + админка работают; проверка — scripts/verify-store.sh.
 
 ---
 
@@ -80,15 +81,23 @@ src/lib/admin-auth.ts         авторизация админки: env ADMIN_P
 src/lib/db.ts                 singleton PrismaClient
 src/lib/cart-store.ts         zustand-корзина (persist localStorage), SSR-safe через
                               useSyncExternalStore — паттерн mounted() запрещён линтом!
-src/lib/catalog.ts            фильтр каталога (zustand): бенто-категории скроллят к
-                              секции #products с предустановленным фильтром
-src/app/page.tsx              порядок секций лендинга
-src/app/layout.tsx            шрифт Manrope (latin+cyrillic), SEO на русском, lang="ru"
-src/components/landing/       hero, ticker, benefits, categories(bento), why-us,
-                              delivery, contacts(форма лидов), site-header(с кнопкой
-                              корзины), site-footer, mobile-cta(панель внизу мобилки)
-src/components/catalog/catalog-section.tsx   витрина #products: чипы-фильтры,
-                              карточки товаров, степпер «в корзине», force-dynamic
+src/lib/catalog.ts            константы категорий (фото/метки) + formatPrice;
+                              zustand-фильтр useCatalogFilter (плитки в витрине
+                              фильтруют сетку на месте)
+src/app/page.tsx              порядок секций: Hero → FactsStrip → Catalog →
+                              WhyUs → Delivery → Contacts
+src/app/layout.tsx            шрифты Manrope + Playfair Display (обе cyrillic),
+                              SEO на русском, lang="ru"
+src/components/landing/       hero(компактная вводная-полоса БЕЗ большого хиро и фото),
+                              facts-strip(тёмная полоса фактов), why-us(чек-лист +
+                              «Как купить»), delivery, contacts(форма лидов),
+                              site-header(серифный логотип; Каталог/Доставка/Контакты,
+                              тел., корзина), site-footer, mobile-cta
+                              УДАЛЕНЫ: ticker(бегущая строка), categories(бенто — влит
+                              в catalog-section плитками-фильтрами), benefits
+src/components/catalog/catalog-section.tsx   витрина #products: плитки категорий
+                              (работают как фильтр), карточки товаров, степпер
+                              «в корзине», force-dynamic
 src/components/cart/          cart-sheet (drawer со списком, +/-, формой заявки и
                               success-экраном «Заявка №N»), cart-button (badge в шапке;
                               на мобилке отдельный FAB)
@@ -104,19 +113,17 @@ public/images/                фирменные AI-фото: hero, category-doo
                               kitchen, delivery-van (+ favicon.svg, logo.svg)
 scripts/seed-products.mjs     сид 12 демо-товаров
 scripts/gen-images.mjs, gen-delivery.mjs   генерация фото через z-ai-web-dev-sdk
-scripts/verify-catalog.sh     полный E2E-прогон (методология проверок)
-worklog.md                    журнал всех итераций разработки (4 задачи)
+scripts/verify-store.sh       проверка текущей версии: сервер + шрифт H1 + секции +
+                              скриншоты t12-*.png (десктоп + мобилка)
+worklog.md                    журнал всех итераций разработки
 ```
 
 Скриншоты текущего дизайна (**смотри только эти**, остальные — старые отвергнутые версии):
-- `scripts/v3-*.png` — лендинг «тёплый премиум» (hero, catalog, whyus, delivery, contacts…)
-- `scripts/v4-*.png` — каталог/корзина/админка: `v4-01-home`, `v4-02-catalog`,
-  `v4-03-filter-tiles`, `v4-04-added-badge`, `v4-05-cart`, `v4-06-success`,
-  `v4-07..08-admin-login`, `v4-09-admin-leads`, `v4-10-lead-inprogress`,
-  `v4-11-admin-products`, `v4-12-admin-newproduct`, `v4-m1/m2/m3-*` — мобильные.
+- `scripts/t12-*.png` (копия в `download/screenshots-t12/`) — структура «магазин» от 29.08:
+  вводная полоса, плитки-фильтры, сетка товаров, фильтр, why-us, доставка, контакты, мобилка.
 
-НЕ ориентироваться на `redesign*.png`, `v2-*.png`, `verify-*.png` — это предыдущие
-отвергнутые клиентом версии дизайна.
+НЕ ориентироваться на `redesign*.png`, `v2-*.png`, `v3-*.png`, `v4-*.png`, `verify-*.png` —
+это предыдущие версии дизайна (v4 была основой Task 12, но устарела).
 
 ---
 
@@ -144,10 +151,13 @@ worklog.md                    журнал всех итераций разра�
 4. Витрина показывает только isActive=true, сортировка sortOrder.
 5. Админка сознательно простая: один пароль из env, sha256-cookie, без сессий в БД.
    Для продакшена стоит заменить на настоящую auth — сейчас этого НЕ требуется.
-6. Дизайн прошёл 4 итерации отбора; текущий утверждён клиентом. Менять внешний вид можно
-   только точечно, сохраняя палитру ч/б/оранж и уровень детализации («не ИИ-шно»):
-   сплошные цвета вместо градиентов/свечений, радиусы 8–16px, редакционные макеты
-   с номерами и линиями, оранжевый дозированно (~5 акцентов на экран), фото без людей.
+6. Дизайн: строгая палитра ч/б/оранж; **структура «магазин, а не лендинг»** (29.08):
+   шапка → вводная полоса → полоса фактов → #products (плитки категорий-фильтры +
+   сетка товаров) → почему мы → доставка → контакты. Заголовки/цены/логотип —
+   Playfair Display (утилита `font-display`), текст — Manrope. ЗАПРЕЩЕНЫ: extrabold,
+   негативный трекинг, капсулы-бейджи, свечения/градиенты, бегущие строки, наклейки,
+   dashed-рамки. Оранжевый дозированно (~5 акцентов/экран); основные кнопки — чёрные
+   (hover — оранжевый), оранжевый — только для корзины/акцентов/ссылок.
 
 ---
 

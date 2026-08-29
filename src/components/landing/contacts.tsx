@@ -58,14 +58,14 @@ export function Contacts() {
   return (
     <section
       id="contacts"
-      className="scroll-mt-16 bg-white py-20 sm:py-24"
+      className="scroll-mt-16 bg-white py-16 sm:py-20"
       aria-label="Контакты"
     >
       <div className="mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
         {/* Контактная информация */}
         <div>
           <FadeIn>
-            <h2 className="font-display text-3xl font-extrabold leading-[1.1] tracking-[-0.02em] text-zinc-950 sm:text-[40px]">
+            <h2 className="font-display text-[30px] font-medium leading-[1.12] text-zinc-950 sm:text-[38px]">
               Ждём вас в магазине
             </h2>
             <p className="mt-5 max-w-md text-[16px] leading-relaxed text-zinc-600 sm:text-[17px]">
@@ -102,7 +102,7 @@ export function Contacts() {
                 </p>
                 <a
                   href={site.phoneHref}
-                  className="mt-1.5 inline-flex items-center gap-2.5 font-display text-[26px] font-extrabold tracking-tight text-zinc-950 transition-colors hover:text-orange-600"
+                  className="mt-1.5 inline-flex items-center gap-2.5 font-display text-[24px] font-semibold tracking-normal text-zinc-950 transition-colors hover:text-orange-600"
                 >
                   <Phone className="h-6 w-6 text-orange-600" strokeWidth={2.1} />
                   {site.phone}
@@ -140,7 +140,7 @@ export function Contacts() {
           <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
             <div aria-hidden className="h-1 bg-orange-600" />
             <div className="p-7 sm:p-9">
-              <h3 className="font-display text-[24px] font-extrabold tracking-[-0.01em] text-zinc-950">
+              <h3 className="font-display text-[22px] font-medium tracking-normal text-zinc-950">
                 Оставьте заявку
               </h3>
               <p className="mt-2 text-[15px] leading-relaxed text-zinc-500">

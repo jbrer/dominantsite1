@@ -1,8 +1,6 @@
 import { SiteHeader } from '@/components/landing/site-header'
 import { Hero } from '@/components/landing/hero'
-import { Ticker } from '@/components/landing/ticker'
-import { Benefits } from '@/components/landing/benefits'
-import { Categories } from '@/components/landing/categories'
+import { FactsStrip } from '@/components/landing/facts-strip'
 import { CatalogSection } from '@/components/catalog/catalog-section'
 import { CartSheet } from '@/components/cart/cart-sheet'
 import { CartFab } from '@/components/cart/cart-button'
@@ -33,6 +31,8 @@ async function getProducts(): Promise<PublicProduct[]> {
   }))
 }
 
+// Структура «магазин, а не лендинг»: шапка → короткая вводная полоса →
+// полоса фактов → каталог (главный блок) → о магазине → доставка → контакты.
 export default async function Home() {
   const products = await getProducts()
 
@@ -41,9 +41,7 @@ export default async function Home() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
-        <Ticker />
-        <Benefits />
-        <Categories />
+        <FactsStrip />
         <CatalogSection products={products} />
         <WhyUs />
         <Delivery />
