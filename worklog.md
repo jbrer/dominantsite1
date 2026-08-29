@@ -166,3 +166,26 @@ Stage Summary:
 - БЛОКЕРЫ для завершения: (1) архив последней версии от владельца — восстановить
   Task 6–11; (2) GitHub Personal Access Token (scope repo) — создать репозиторий.
 - После получения токена: bash scripts/github-setup.sh → репо + push.
+
+---
+Task ID: GH-2
+Agent: Super Z (main)
+Task: Загрузить проект на GitHub (завершение GH-1)
+
+Work Log:
+- Токен владельца (fine-grained, аккаунт jbrer) проверен: GET /user = 200.
+- Создание нового репо через API → 403 (у fine-grained токена не было прав
+  Administration); push в существующий → 403 (не было Contents).
+- Владелец по моим пошаговым инструкциям (со скриншотами) отредактировал токен:
+  Repository access → All repositories; Permissions → Repositories → Contents
+  Read-and-write + Administration Read-and-write; Update.
+- Повторный push: SUCCESS — main (5f45bb4) → jbrer/dominantsite1.
+- PATCH /repos/jbrer/dominantsite1 {"private":true} → private = True.
+- AGENTS.md §10 обновлён фактическим адресом репо и процедурой восстановления remote.
+
+Stage Summary:
+- РЕПОЗИТОРИЙ РАБОТАЕТ: https://github.com/jbrer/dominantsite1 (приватный).
+- remote origin настроен, main трекает origin/main; пуш после каждой итерации.
+- Токен лежит в .git/config (в git не попадает); у токена срок до 28.09.2026.
+- ОСТАЁТСЯ ОТКРЫТЫМ: архив владельца dominant-showroom-site-2026-08-28.zip —
+  восстановить в репо версию Task 11 (сейчас на GitHub версия эпохи Task 5).
