@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Товар каталога ДОМИНАНТ. Администратор управляет ими через /admin.
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  // doors | tiles | laminate | kitchens
+  category    String
+  // Цена в рублях; null = «цена по запросу»
+  price       Int?
+  unit        String   @default("шт")
+  description String?
+  // Необязательная ссылка на фото; если пусто — показываем фото категории
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  leadItems LeadItem[]
+}
+
+// Заявки с лендинга ДОМИНАНТ: форма «Оставьте заявку» и корзина каталога.
+model Lead {
+  id      Int    @id @default(autoincrement())
+  name    String
+  phone   String
+  message String?
+
+  // form — простая форма контактов; cart — заявка из корзины с товарами
+  source    String             @default("form")
+  // new | in_progress | done
+  status    String             @default("new")
+  createdAt DateTime           @default(now())
+  items     LeadItem[]
+}
+
+// Снапшот позиции корзины в момент оформления заявки:
+// храним название/цену/единицу на момент покупки, история не ломается.
+model LeadItem {
+  id        Int     @id @default(autoincrement())
+  leadId    Int
+  productId Int?
+  name      String
+  price     Int?
+  unit      String  @default("шт")
+  qty       Int
+
+  lead     Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  product  Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([leadId])
+}
