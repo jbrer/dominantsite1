@@ -27,6 +27,11 @@ import {
   type PublicProduct,
 } from '@/lib/catalog'
 import { site } from '@/lib/site'
+import { asset } from '@/lib/asset'
+
+// В статической витрине (GitHub Pages) серверной части нет — вместо формы
+// заявки предлагаем позвонить: список товаров уже собран в корзине.
+const STATIC_MODE = process.env.NEXT_PUBLIC_STATIC === '1'
 
 const PHONE_RE = /^\+?[\d\s()-]{7,20}$/
 
@@ -179,7 +184,7 @@ export function CartSheet({ products }: Props) {
               {rows.map(({ entry, product }) => (
                 <li key={product.id} className="flex gap-3.5 py-4">
                   <img
-                    src={product.imageUrl || CATEGORY_MAP[product.category]?.image}
+                    src={asset(product.imageUrl || CATEGORY_MAP[product.category]?.image || '')}
                     alt={product.name}
                     className="h-14 w-14 shrink-0 rounded-lg border border-zinc-100 object-cover"
                   />
@@ -249,46 +254,58 @@ export function CartSheet({ products }: Props) {
                 Точную сумму с доставкой рассчитает менеджер
               </p>
 
-              <div className="mt-4 space-y-2.5">
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Ваше имя *"
-                  autoComplete="name"
-                  maxLength={80}
-                  className="h-[52px] w-full rounded-xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                />
-                <input
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Номер телефона *"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  maxLength={20}
-                  className="h-[52px] w-full rounded-xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                />
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Комментарий: размеры, цвет, время звонка…"
-                  rows={2}
-                  maxLength={500}
-                  className="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 text-[15px] leading-snug text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                />
-              </div>
+              {STATIC_MODE ? (
+                /* Статическая витрина: оформление — по телефону */
+                <a
+                  href={site.phoneHref}
+                  className="mt-4 inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-orange-600 text-[15px] font-bold text-white transition-all hover:bg-orange-500 active:scale-[0.99]"
+                >
+                  Позвонить и оформить заказ
+                </a>
+              ) : (
+                <>
+                  <div className="mt-4 space-y-2.5">
+                    <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ваше имя *"
+                      autoComplete="name"
+                      maxLength={80}
+                      className="h-[52px] w-full rounded-xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+                    />
+                    <input
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Номер телефона *"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      maxLength={20}
+                      className="h-[52px] w-full rounded-xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+                    />
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Комментарий: размеры, цвет, время звонка…"
+                      rows={2}
+                      maxLength={500}
+                      className="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 text-[15px] leading-snug text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+                    />
+                  </div>
 
-              <button
-                type="button"
-                disabled={!valid || sending}
-                onClick={submit}
-                className="mt-3.5 inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-orange-600 text-[15px] font-bold text-white transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                {sending && <Loader2 className="h-4 w-4 animate-spin" />}
-                {sending ? 'Отправляем…' : 'Оставить заявку'}
-              </button>
-              <p className="mt-2.5 text-center text-[12px] leading-snug text-zinc-400">
-                Никаких предоплат — просто перезвоним и всё уточним
-              </p>
+                  <button
+                    type="button"
+                    disabled={!valid || sending}
+                    onClick={submit}
+                    className="mt-3.5 inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-orange-600 text-[15px] font-bold text-white transition-all hover:bg-orange-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    {sending && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {sending ? 'Отправляем…' : 'Оставить заявку'}
+                  </button>
+                  <p className="mt-2.5 text-center text-[12px] leading-snug text-zinc-400">
+                    Никаких предоплат — просто перезвоним и всё уточним
+                  </p>
+                </>
+              )}
             </div>
           </>
         )}

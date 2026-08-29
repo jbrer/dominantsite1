@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "name": "Дверь межкомнатная «Экошпон Дуб натуральный»",
+    "category": "doors",
+    "price": 389,
+    "unit": "шт",
+    "description": "Глухая или со стеклом. Размеры 600/700/800/900 × 2000 мм. Более 20 расцветок в зале.",
+    "imageUrl": null
+  },
+  {
+    "id": 2,
+    "name": "Дверь входная «Сталь-Люкс Т-2»",
+    "category": "doors",
+    "price": 749,
+    "unit": "шт",
+    "description": "Утеплённая, два замка, порошковое покрытие. Установка за один день.",
+    "imageUrl": null
+  },
+  {
+    "id": 3,
+    "name": "Ручка нажимная с магнитным замком",
+    "category": "doors",
+    "price": 35,
+    "unit": "шт",
+    "description": "Тихое защёлкивание, цвет под золото / хром / брасс.",
+    "imageUrl": null
+  },
+  {
+    "id": 4,
+    "name": "Керамогранит Seranit Grey 60×60",
+    "category": "tiles",
+    "price": 47,
+    "unit": "м²",
+    "description": "Матовый, ректифицированный край. Подходит для пола и стен.",
+    "imageUrl": null
+  },
+  {
+    "id": 5,
+    "name": "Плитка для ванной Cersanit White Gloss 25×40",
+    "category": "tiles",
+    "price": 32,
+    "unit": "м²",
+    "description": "Глянцевая белая. Есть декор и бордюры в тон.",
+    "imageUrl": null
+  },
+  {
+    "id": 6,
+    "name": "Мозаика стеклянная «Микс» 30×30",
+    "category": "tiles",
+    "price": 96,
+    "unit": "м²",
+    "description": "Лист на сетке 30×30 см. Для фартука и ванной.",
+    "imageUrl": null
+  },
+  {
+    "id": 7,
+    "name": "Ламинат 32 класс «Дуб Кантри» 8 мм",
+    "category": "laminate",
+    "price": 27,
+    "unit": "м²",
+    "description": "Фаска с четырёх сторон, замок Click. Укладка от одного дня.",
+    "imageUrl": null
+  },
+  {
+    "id": 8,
+    "name": "Ламинат влагостойкий Aqua «Дуб Сонома»",
+    "category": "laminate",
+    "price": 34,
+    "unit": "м²",
+    "description": "Влагостойкая плита — подходит для кухни и прихожей.",
+    "imageUrl": null
+  },
+  {
+    "id": 9,
+    "name": "Подложка Изолон 3 мм",
+    "category": "laminate",
+    "price": 3,
+    "unit": "м²",
+    "description": "Под любые виды ламината, рулон 30 м².",
+    "imageUrl": null
+  },
+  {
+    "id": 10,
+    "name": "Кухня прямая «Верона» 2,4 м",
+    "category": "kitchens",
+    "price": 2190,
+    "unit": "компл",
+    "description": "Фасады МДФ, столешница постформинг, доводчики Blum. Проект — бесплатно.",
+    "imageUrl": null
+  },
+  {
+    "id": 11,
+    "name": "Кухня угловая «Модена» 2,8 × 1,8 м",
+    "category": "kitchens",
+    "price": 3490,
+    "unit": "компл",
+    "description": "11 фасадов, ящики полного выдвижения. Замер по Брестской области.",
+    "imageUrl": null
+  },
+  {
+    "id": 12,
+    "name": "Столешница постформинг 3000 × 600 мм",
+    "category": "kitchens",
+    "price": 149,
+    "unit": "шт",
+    "description": "Влагостойкая, закруглённый радиус. Более 15 декоров.",
+    "imageUrl": null
+  }
+]

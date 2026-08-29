@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import { MapPin } from 'lucide-react'
 import { FadeIn } from './fade-in'
+import { asset } from '@/lib/asset'
 
 const MAIN_CITIES = ['Пинск', 'Иваново', 'Дрогичин']
 
@@ -48,11 +48,9 @@ export function Delivery() {
         <FadeIn delay={0.12}>
           <figure>
             <div className="overflow-hidden rounded-xl ring-1 ring-white/15">
-              <Image
-                src="/images/delivery-van.png"
+              <img
+                src={asset('/images/delivery-van.png')}
                 alt="Фургон доставки ДОМИНАНТ с открытым багажником у дома клиента"
-                width={1152}
-                height={864}
                 className="h-auto w-full object-cover"
               />
             </div>

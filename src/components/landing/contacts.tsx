@@ -8,6 +8,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { FadeIn } from './fade-in'
 import { site } from '@/lib/site'
+import { asset } from '@/lib/asset'
+
+// В статической витрине (GitHub Pages) приёма заявок нет — вместо формы
+// предлагаем позвонить/прийти. Флаг инлайнится при сборке.
+const STATIC_MODE = process.env.NEXT_PUBLIC_STATIC === '1'
 
 export function Contacts() {
   const { toast } = useToast()
@@ -135,18 +140,41 @@ export function Contacts() {
           </FadeIn>
         </div>
 
-        {/* Форма */}
+        {/* Форма (в статической витрине — призыв позвонить) */}
         <FadeIn delay={0.1}>
           <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
             <div aria-hidden className="h-1 bg-orange-600" />
             <div className="p-7 sm:p-9">
-              <h3 className="font-display text-[22px] font-medium tracking-normal text-zinc-950">
-                Оставьте заявку
-              </h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-zinc-500">
-                Напишите, что вас интересует — перезвоним, проконсультируем
-                и всё рассчитаем. Это ни к чему не обязывает.
-              </p>
+              {STATIC_MODE ? (
+                <>
+                  <h3 className="font-display text-[22px] font-medium tracking-normal text-zinc-950">
+                    Позвоните или заходите
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-zinc-500">
+                    Ответим на вопросы, подскажем наличие и цены, рассчитаем
+                    доставку до вашего дома.
+                  </p>
+                  <a
+                    href={site.phoneHref}
+                    className="mt-6 inline-flex h-[52px] w-full items-center justify-center gap-2.5 rounded-lg bg-orange-600 text-[16px] font-bold text-white transition-colors hover:bg-orange-500"
+                  >
+                    <Phone className="h-5 w-5" strokeWidth={2.2} />
+                    {site.phone}
+                  </a>
+                  <p className="mt-4 text-center text-[13px] leading-relaxed text-zinc-400">
+                    {site.hours[0]?.days} {site.hours[0]?.time} · Сб{' '}
+                    {site.hours[1]?.time} · Вс {site.hours[2]?.time}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3 className="font-display text-[22px] font-medium tracking-normal text-zinc-950">
+                    Оставьте заявку
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-zinc-500">
+                    Напишите, что вас интересует — перезвоним, проконсультируем
+                    и всё рассчитаем. Это ни к чему не обязывает.
+                  </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4.5">
                 <div className="space-y-1.5">
@@ -230,6 +258,8 @@ export function Contacts() {
                   персональных данных. Мы не передаём ваши данные третьим лицам.
                 </p>
               </form>
+                </>
+              )}
             </div>
           </div>
         </FadeIn>

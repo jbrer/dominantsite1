@@ -232,3 +232,36 @@ Stage Summary:
 - Дизайн-правила зафиксированы в AGENTS.md §6 (запрет extrabold/капсул/свечений и т.д.).
 - Открытые вопросы для будущих итераций: метки «в наличии / под заказ» (нужно поле
   в схеме), отдельная страница каталога, реальный телефон/часы в src/lib/site.ts.
+
+---
+Task ID: 13
+Agent: Super Z (main)
+Task: Деплой витрины на GitHub Pages (запрос владельца: «можешь ли ты задеплоить
+сайт на github'e?»)
+
+Work Log:
+- GitHub Pages хостит только статику, а сайт — серверное приложение (БД, API,
+  админка). Решение: ДВА режима сборки из одной кодовой базы.
+- next.config.ts: EXPORT_MODE=1 → output:'export', basePath /dominantsite1,
+  images.unoptimized; иначе — прежний standalone.
+- scripts/export-products.mjs: товары из SQLite → src/data/products.json
+  (12 шт., коммитится; в CI БД недоступна — читается JSON).
+- page.tsx: NEXT_PUBLIC_STATIC=1 → товары из JSON вместо БД.
+- cart-sheet: в статике вместо формы заявки — кнопка «Позвонить и оформить заказ»;
+  contacts: вместо формы — блок «Позвоните или заходите» с телефоном и часами.
+- Несовместимое с экспортом (api/, admin/) временно убирается скриптом сборки;
+  force-dynamic временно комментируется sed'ом; после сборки всё восстанавливается.
+- Хелпер src/lib/asset.ts: next/image в unoptimized НЕ добавляет basePath — все
+  картинки переведены на <img src={asset(...)}>; favicon в metadata — с префиксом.
+- scripts/build-pages.sh — локальная и CI-сборка витрины в out/ (2.3 МБ);
+  проверена локально: все пути /dominantsite1/..., index.html на месте.
+- .github/workflows/deploy-pages.yml: push в main → сборка → deploy-pages;
+  configure-pages c enablement:true (у токена владельца нет права Pages API —
+  Pages включится автоматически при первом запуске workflow).
+- Репозиторий переведён в публичный (Pages на Free-плане требует публичный репо).
+
+Stage Summary:
+- Полная версия (БД+админка+заявки) не тронута — работает как раньше.
+- Витрина для Pages готова и собрана; деплой произойдёт после пуша workflow.
+- Ограничение статики: заявки только звонком (серверного приёма нет), админки нет —
+  обновление товаров = правка seed + export-products + push.

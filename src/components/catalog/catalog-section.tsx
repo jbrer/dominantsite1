@@ -2,7 +2,6 @@
 
 // Секция «Каталог»: плитки категорий (работают как фильтр) + сетка товаров.
 // Товары из БД, кнопка «В корзину» кладёт товар в корзину (zustand + localStorage).
-import Image from 'next/image'
 import { Minus, Phone, Plus, ShoppingBasket, X } from 'lucide-react'
 import { FadeIn } from '@/components/landing/fade-in'
 import { useCart, useCartQty, useCatalogFilter } from '@/lib/cart-store'
@@ -13,6 +12,7 @@ import {
   type PublicProduct,
 } from '@/lib/catalog'
 import { site } from '@/lib/site'
+import { asset } from '@/lib/asset'
 
 export function CatalogSection({ products }: { products: PublicProduct[] }) {
   const category = useCatalogFilter((s) => s.category)
@@ -69,11 +69,9 @@ export function CatalogSection({ products }: { products: PublicProduct[] }) {
                         : 'ring-1 ring-zinc-200 group-hover:ring-zinc-400'
                     }`}
                   >
-                    <Image
-                      src={cat.image}
+                    <img
+                      src={asset(cat.image)}
                       alt={cat.alt}
-                      width={576}
-                      height={432}
                       className="h-28 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:h-32"
                     />
                   </span>
@@ -170,7 +168,7 @@ function ProductCard({ product }: { product: PublicProduct }) {
       {/* Фото товара (или фото категории как заглушка) */}
       <div className="relative h-44 overflow-hidden sm:h-48">
         <img
-          src={product.imageUrl || meta?.image}
+          src={asset(product.imageUrl || meta?.image || '')}
           alt={product.name}
           loading="lazy"
           className="h-full w-full object-cover"

@@ -10,9 +10,14 @@ import { Contacts } from '@/components/landing/contacts'
 import { SiteFooter } from '@/components/landing/site-footer'
 import { MobileCtaBar } from '@/components/landing/mobile-cta'
 import { db } from '@/lib/db'
+import staticProducts from '@/data/products.json'
 import type { PublicProduct } from '@/lib/catalog'
 
-// Витрина должна мгновенно отражать изменения из админки
+// Статический режим (GitHub Pages, NEXT_PUBLIC_STATIC=1): товары запечены
+// при сборке в src/data/products.json (обновляется scripts/export-products.mjs).
+const STATIC_MODE = process.env.NEXT_PUBLIC_STATIC === '1'
+
+// Витрина должна мгновенно отражать изменения из админки — только в серверном режиме
 export const dynamic = 'force-dynamic'
 
 async function getProducts(): Promise<PublicProduct[]> {
@@ -31,10 +36,14 @@ async function getProducts(): Promise<PublicProduct[]> {
   }))
 }
 
+async function resolveProducts(): Promise<PublicProduct[]> {
+  return STATIC_MODE ? (staticProducts as PublicProduct[]) : await getProducts()
+}
+
 // Структура «магазин, а не лендинг»: шапка → короткая вводная полоса →
 // полоса фактов → каталог (главный блок) → о магазине → доставка → контакты.
 export default async function Home() {
-  const products = await getProducts()
+  const products = await resolveProducts()
 
   return (
     <div className="flex min-h-screen flex-col bg-white">

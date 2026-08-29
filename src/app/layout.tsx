@@ -30,7 +30,8 @@ export const metadata: Metadata = {
     "рассрочка на ремонт",
   ],
   icons: {
-    icon: "/favicon.svg",
+    // В статическом экспорте сайт живёт под basePath (GitHub Pages)
+    icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/favicon.svg`,
   },
   openGraph: {
     title: "ДОМИНАНТ — помогаем создать дом мечты",
